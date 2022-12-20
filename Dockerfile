@@ -22,6 +22,7 @@ COPY etc/supervisor/conf.d/redis.conf /etc/supervisor/conf.d/redis.conf
 COPY init.d/50-redis.sh /docker-entrypoint-init.d/50-redis.sh
 COPY tests.d/50-redis.sh /docker-entrypoint-tests.d/50-redis.sh
 RUN set -ex; \
+	mkdir /etc/redis; \
 	chown root:root \
 		/etc/supervisor/conf.d/redis.conf \
 		/docker-entrypoint-init.d/50-redis.sh \
@@ -30,7 +31,14 @@ RUN set -ex; \
 		/etc/supervisor/conf.d/redis.conf; \
 	chmod 0755 \
 		/docker-entrypoint-init.d/50-redis.sh \
-		/docker-entrypoint-tests.d/50-redis.sh
+		/docker-entrypoint-tests.d/50-redis.sh; \
+	chown root:redis \
+		/etc/redis.conf \
+		/etc/redis; \
+	chmod 0640 \
+		/etc/redis.conf; \
+	chmod 0750 \
+		/etc/redis
 
 VOLUME ["/var/lib/redis"]
 

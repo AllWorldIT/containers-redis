@@ -7,3 +7,21 @@ chmod 0750 /var/lib/redis
 
 find /var/lib/redis -type f -print0 | xargs -0 --no-run-if-empty chmod 0640
 
+echo "NOTICE: Initializing settings"
+
+# Setup the password
+if [ -n "$REDIS_PASSWORD" ]; then
+	# Enable ACL file
+	sed -ri "s!^#?(aclfile)\s*=\s*\S+.*!\1 = /etc/redis/users.acl!" /etc/redis.conf
+	grep -F "aclfile = /etc/redis/users.acl" /etc/redis.conf
+	# Setup default user
+	echo "user default on +@all ~* >$REDIS_PASSWORD" > /etc/redis/users.acl
+	# Fixup perms
+	chmod 0640 /etc/redis/users.acl
+	chown root:redis /etc/redis/users.acl
+fi
+
+# Fix main config perms
+chmod 0640 /etc/redis.conf
+chown root:redis /etc/redis.conf
+

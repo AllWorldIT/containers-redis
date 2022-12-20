@@ -16,3 +16,7 @@ Data directory.
 
 Exposes Redis port 6379.
 
+## REDIS_PASSWORD
+
+Password to use for Redis.
+
