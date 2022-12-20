@@ -19,19 +19,22 @@ RUN set -ex; \
 
 # Redis
 COPY etc/supervisor/conf.d/redis.conf /etc/supervisor/conf.d/redis.conf
-COPY init.d/50-redis.sh /docker-entrypoint-init.d/50-redis.sh
-COPY tests.d/50-redis.sh /docker-entrypoint-tests.d/50-redis.sh
+COPY init.d/60-redis.sh /docker-entrypoint-init.d/60-redis.sh
+COPY tests.d/60-redis.sh /docker-entrypoint-tests.d/60-redis.sh
+COPY usr/bin/healthcheck /usr/bin/healthcheck
 RUN set -ex; \
 	mkdir /etc/redis; \
 	chown root:root \
 		/etc/supervisor/conf.d/redis.conf \
-		/docker-entrypoint-init.d/50-redis.sh \
-		/docker-entrypoint-tests.d/50-redis.sh; \
+		/docker-entrypoint-init.d/60-redis.sh \
+		/docker-entrypoint-tests.d/60-redis.sh \
+		/usr/bin/healthcheck; \
 	chmod 0644 \
 		/etc/supervisor/conf.d/redis.conf; \
 	chmod 0755 \
-		/docker-entrypoint-init.d/50-redis.sh \
-		/docker-entrypoint-tests.d/50-redis.sh; \
+		/docker-entrypoint-init.d/60-redis.sh \
+		/docker-entrypoint-tests.d/60-redis.sh \
+		/usr/bin/healthcheck; \
 	chown root:redis \
 		/etc/redis.conf \
 		/etc/redis; \
@@ -44,4 +47,4 @@ VOLUME ["/var/lib/redis"]
 
 EXPOSE 6379
 
-HEALTHCHECK CMD redis-cli ping
+HEALTHCHECK CMD healthcheck

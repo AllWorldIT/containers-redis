@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ -n "$REDIS_PASSWORD" ]; then
+	export REDISCLI_AUTH=$REDIS_PASSWORD
+fi
+
+redis-cli PING | grep -q PONG
+
+unset REDISCLI_AUTH
