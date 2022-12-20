@@ -44,3 +44,4 @@ VOLUME ["/var/lib/redis"]
 
 EXPOSE 6379
 
+HEALTHCHECK CMD redis-cli ping
