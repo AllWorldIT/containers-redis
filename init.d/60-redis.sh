@@ -16,7 +16,7 @@ if [ -n "$REDIS_PASSWORD" ]; then
 	grep -q -E "^aclfile /etc/redis/users.acl" /etc/redis.conf
 	# Setup default user
 	if [ ! -s /etc/redis/users.acl ]; then
-		echo "user default on +@all ~* >$REDIS_PASSWORD" > /etc/redis/users.acl
+		echo "user default on +@all ~* &* >$REDIS_PASSWORD" > /etc/redis/users.acl
 	fi
 	# Fixup perms
 	chmod 0640 /etc/redis/users.acl
