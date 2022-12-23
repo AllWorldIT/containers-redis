@@ -47,4 +47,5 @@ VOLUME ["/var/lib/redis"]
 
 EXPOSE 6379
 
-HEALTHCHECK CMD healthcheck
+HEALTHCHECK CMD healthcheck || exit 1
+
