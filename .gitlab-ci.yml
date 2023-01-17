@@ -1,15 +1,14 @@
 include:
-  - project: 'allworldit/docker/gitlab-ci-template'
-    ref: master
+  - project: 'gitlab/templates/containers'
+    ref: main
     file: '/default.yml'
 
 
-test:
+test-with-password:
   stage: test
+  needs:
+    - build
+    - test
   script:
     - docker pull "${CI_IMAGE}"
-    - docker run --rm -e CI=true --mount type=bind,source=/tmp,destination=/var/lib/redis "${CI_IMAGE}"
-    - docker run --rm -e CI=true -e REDIS_PASSWORD=testpass --mount type=bind,source=/tmp,destination=/var/lib/redis "${CI_IMAGE}"
-  artifacts:
-    paths:
-      - .TIMESTAMP
+    - docker run --rm -e CI=true -e REDIS_PASSWORD=testpass "${CI_IMAGE}"
