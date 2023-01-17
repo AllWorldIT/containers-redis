@@ -11,4 +11,4 @@ test-with-password:
     - test
   script:
     - docker pull "${PIPELINE_IMAGE}"
-    - docker run --rm -e CI=true -e REDIS_PASSWORD=testpass "${PIPELINE_IMAGE}"
+    - docker run --rm -e FDC_CI=true -e REDIS_PASSWORD=testpass "${PIPELINE_IMAGE}"
