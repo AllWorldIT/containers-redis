@@ -28,14 +28,14 @@ LABEL org.opencontainers.image.version   = "edge"
 LABEL org.opencontainers.image.base.name = "registry.conarx.tech/containers/alpine/edge"
 
 
-RUN set -ex; \
+RUN set -eux; \
 	true "Redis"; \
 	apk add --no-cache redis; \
 	true "Cleanup"; \
 	rm -f /var/cache/apk/*
 
 # Disable listening on only localhost
-RUN set -ex; \
+RUN set -eux; \
 	sed -ire 's,^bind\(.*\),#bind\1,' /etc/redis.conf; \
 	grep -E '^#bind' /etc/redis.conf
 
@@ -44,7 +44,7 @@ COPY etc/supervisor/conf.d/redis.conf /etc/supervisor/conf.d/redis.conf
 COPY usr/local/share/flexible-docker-containers/init.d/42-redis.sh /usr/local/share/flexible-docker-containers/init.d
 COPY usr/local/share/flexible-docker-containers/tests.d/42-redis.sh /usr/local/share/flexible-docker-containers/tests.d
 COPY usr/local/share/flexible-docker-containers/healthcheck.d/42-redis.sh /usr/local/share/flexible-docker-containers/healthcheck.d
-RUN set -ex; \
+RUN set -eux; \
 	true "Flexible Docker Containers"; \
 	if [ -n "$VERSION_INFO" ]; then echo "$VERSION_INFO" >> /.VERSION_INFO; fi; \
 	true "Permissions"; \
