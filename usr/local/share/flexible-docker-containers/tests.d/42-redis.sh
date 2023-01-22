@@ -20,18 +20,18 @@
 # IN THE SOFTWARE.
 
 
-echo "TEST START (redis): Testing Redis..."
+fdc_test_start redis "Testing Redis..."
 
 if [ -n "$REDIS_PASSWORD" ]; then
-	echo "TEST INFO (redis): Testing with password"
+	fdc_test_progress redis "Testing with password"
 	export REDISCLI_AUTH=$REDIS_PASSWORD
 fi
 
 if ! redis-cli INCR testcounter | grep -E "^1$"; then
-	echo "TEST FAILED (redis): Failed to execute Redis INCR"
+	fdc_test_fail redis "Failed to execute Redis INCR"
 	false
 fi
 
 unset REDISCLI_AUTH
 
-echo "TEST PASSED (redis): Redis test for INCR passed"
+fdc_test_pass redis "Redis test for INCR passed"
