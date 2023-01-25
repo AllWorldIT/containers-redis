@@ -31,11 +31,13 @@ fdc_notice "Initializing Redis settings"
 
 # Setup the password
 if [ -n "$REDIS_PASSWORD" ] || [ -e /etc/redis/users.acl ]; then
+	fdc_info "Enabling Redis user ACL"
 	# Enable ACL file
 	sed -ri "s!^#?\s*(aclfile)\s+\S+.*!\1 /etc/redis/users.acl!" /etc/redis.conf
 	grep -q -E "^aclfile /etc/redis/users.acl" /etc/redis.conf
 	# Setup default user
 	if [ -n "$REDIS_PASSWORD" ] && [ ! -s /etc/redis/users.acl ]; then
+		fdc_info "Setting Redis password"
 		echo "user default on +@all ~* &* >$REDIS_PASSWORD" > /etc/redis/users.acl
 	fi
 fi
